@@ -1,17 +1,27 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { config, pkgs, ... }:
-
-{
+let
+  unstableTarball =
+    fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
+in {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    packageOverrides = pkgs: {
+      unstable = import unstableTarball {
+        config = config.nixpkgs.config;
+      };
+    };
+  };
+  
+  system.autoUpgrade = {
+    enable = true;
+    allowReboot = false;
+    channel = https://nixos.org/channels/nixos-20.09;
+  };
 
-  # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -20,46 +30,30 @@
   networking.networkmanager.enable = true;
   networking.networkmanager.wifi.backend = "iwd";
 
-  # Set your time zone.
   time.timeZone = "Europe/Copenhagen";
 
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
   networking.useDHCP = false;
   networking.interfaces.enp0s31f6.useDHCP = true;
   networking.interfaces.wlp3s0.useDHCP = true;
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Select internationalisation properties.
   i18n.defaultLocale = "en_DK.UTF-8";
   console = {
     font = "Lat2-Terminus16";
     keyMap = "dk";
   };
 
-  # Configure keymap in X11
   services.xserver.layout = "dk";
-  # services.xserver.xkbOptions = "eurosign:e";
   services.xserver.enable = true;
   services.xserver.desktopManager.pantheon.enable = true;
   services.xserver.displayManager.lightdm.greeters.pantheon.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable sound.
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
-
+  
   # Enable touchpad support (enabled default in most desktopManager).
   services.xserver.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  sound.enable = true;
+  hardware.pulseaudio.enable = true;
+
   users.users.lihram = {
     isNormalUser = true;
     extraGroups = [ 
@@ -71,16 +65,47 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    wget vim
-    firefox
-    discord
-    tectonic
-    vscode
-    cascadia-code
-    fira-code
-    inter
-    rustup
-    git
+    # base packages
+    wget
+    unstable.alacritty
+    unstable.git
+
+    # browsing
+    unstable.firefox
+
+    # social
+    unstable.discord
+    unstable.element-desktop
+
+    # sdks
+    unstable.rustup
+    unstable.tectonic
+    unstable.clang
+
+    # editors
+    (unstable.neovim.override {
+      vimAlias = true;
+      configure = {
+        packages.myPlugins = with unstable.vimPlugins; {
+          start = [ 
+            vim-sensible
+            vim-airline
+            vim-lastplace
+            vim-nix
+          ];
+	  opt = [];
+	};
+	customRC = ''
+          set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
+	'';
+      };
+    })
+    unstable.vscode
+    
+    # Fonts
+    unstable.cascadia-code
+    unstable.fira-code
+    unstable.inter
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
