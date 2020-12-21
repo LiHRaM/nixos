@@ -6,6 +6,7 @@ in {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./neovim-with-plugins.nix
     ];
   nixpkgs.config = {
     allowUnfree = true;
@@ -59,6 +60,8 @@ in {
     extraGroups = [ 
         "wheel"
         "networkmanager"
+        "audio"
+        "video"
     ]; # Enable ‘sudo’ for the user.
   };
 
@@ -83,23 +86,6 @@ in {
     unstable.clang
 
     # editors
-    (unstable.neovim.override {
-      vimAlias = true;
-      configure = {
-        packages.myPlugins = with unstable.vimPlugins; {
-          start = [ 
-            vim-sensible
-            vim-airline
-            vim-lastplace
-            vim-nix
-          ];
-	  opt = [];
-	};
-	customRC = ''
-          set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
-	'';
-      };
-    })
     unstable.vscode
     
     # Fonts
