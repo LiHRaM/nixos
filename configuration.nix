@@ -86,6 +86,7 @@ in {
     unstable.clang
 
     # editors
+    neovim-with-plugins
     unstable.vscode
     
     # Fonts
