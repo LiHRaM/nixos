@@ -1,13 +1,15 @@
-{ config, pkgs, ... }:
+{ config, pkgs, options, ... }:
 let
   unstableTarball =
     fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
 in {
   imports = [
     ./hardware-configuration.nix
-    ./neovim-with-plugins.nix
+    ./elementary.nix
     ./fonts.nix
+    ./overlays/neovim-with-plugins.nix
   ];
+
   nixpkgs.config = {
     allowUnfree = true;
     packageOverrides = pkgs: {
@@ -42,55 +44,6 @@ in {
     font = "Lat2-Terminus16";
     keyMap = "dk";
   };
-
-  services.xserver.layout = "dk";
-  services.xserver.enable = true;
-  services.xserver.desktopManager.pantheon = {
-    enable = true;
-    extraGSettingsOverridePackages = with pkgs; [ pantheon.elementary-settings-daemon ];
-    extraGSettingsOverrides = ''
-      [apps/light-locker]
-      idle-hint=false
-      late-locking=true
-      lock-after-screensaver=uint32 5
-      lock-on-lid=true
-      lock-on-suspend=true
-
-      [io/elementary/desktop/wingpanel/bluetooth]
-      bluetooth-enabled=false
-
-      [io/elementary/desktop/wingpanel/power]
-      show-percentage=true
-
-      [io/elementary/terminal/settings]
-      natural-copy-paste=false
-      prefer-dark-style=true
-
-      [net/launchpad/plank/docks/dock1]
-      theme='Matte'
-
-      [org/gnome/desktop/applications/terminal]
-      exec='alacritty'
-
-      [org/gnome/desktop/interface]
-      document-font-name='sans 10'
-      font-name='sans 10'
-      monospace-font-name='monospace 10'
-
-      [org/gnome/desktop/peripherals/mouse]
-      natural-scroll=false
-
-      [org/gnome/desktop/peripherals/touchpad]
-      natural-scroll=true
-
-    '';
-  };
-  services.xserver.displayManager.lightdm.greeters.pantheon.enable = true;
-  services.xserver.displayManager.lightdm.enable = true;
-
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.enable = true;
 
   sound.enable = true;
   hardware.pulseaudio.enable = true;
@@ -158,7 +111,12 @@ in {
   };
 
   services.flatpak.enable = true;
-  
+
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+  };
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
