@@ -3,11 +3,11 @@ let
   unstableTarball =
     fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
 in {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./neovim-with-plugins.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+    ./neovim-with-plugins.nix
+    ./fonts.nix
+  ];
   nixpkgs.config = {
     allowUnfree = true;
     packageOverrides = pkgs: {
@@ -16,7 +16,7 @@ in {
       };
     };
   };
-  
+
   system.autoUpgrade = {
     enable = true;
     allowReboot = false;
@@ -45,10 +45,50 @@ in {
 
   services.xserver.layout = "dk";
   services.xserver.enable = true;
-  services.xserver.desktopManager.pantheon.enable = true;
+  services.xserver.desktopManager.pantheon = {
+    enable = true;
+    extraGSettingsOverridePackages = with pkgs; [ pantheon.elementary-settings-daemon ];
+    extraGSettingsOverrides = ''
+      [apps/light-locker]
+      idle-hint=false
+      late-locking=true
+      lock-after-screensaver=uint32 5
+      lock-on-lid=true
+      lock-on-suspend=true
+
+      [io/elementary/desktop/wingpanel/bluetooth]
+      bluetooth-enabled=false
+
+      [io/elementary/desktop/wingpanel/power]
+      show-percentage=true
+
+      [io/elementary/terminal/settings]
+      natural-copy-paste=false
+      prefer-dark-style=true
+
+      [net/launchpad/plank/docks/dock1]
+      theme='Matte'
+
+      [org/gnome/desktop/applications/terminal]
+      exec='alacritty'
+
+      [org/gnome/desktop/interface]
+      document-font-name='sans 10'
+      font-name='sans 10'
+      monospace-font-name='monospace 10'
+
+      [org/gnome/desktop/peripherals/mouse]
+      natural-scroll=false
+
+      [org/gnome/desktop/peripherals/touchpad]
+      natural-scroll=true
+
+    '';
+  };
   services.xserver.displayManager.lightdm.greeters.pantheon.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
-  
+
+
   # Enable touchpad support (enabled default in most desktopManager).
   services.xserver.libinput.enable = true;
 
@@ -58,11 +98,11 @@ in {
   users.users.lihram = {
     isNormalUser = true;
     extraGroups = [ 
-        "wheel"
-        "networkmanager"
-        "audio"
-        "video"
-    ]; # Enable ‘sudo’ for the user.
+      "wheel"
+      "networkmanager"
+      "audio"
+      "video"
+    ]; 
   };
 
   # List packages installed in system profile. To search, run:
@@ -72,12 +112,13 @@ in {
     wget
     unstable.alacritty
     unstable.git
+    unstable.skim
+    unstable.fd
 
     # browsing
     unstable.firefox
 
     # social
-    unstable.discord
     unstable.element-desktop
 
     # sdks
@@ -85,14 +126,15 @@ in {
     unstable.tectonic
     unstable.clang
 
+    # language servers
+    texlab
+
     # editors
     neovim-with-plugins
     unstable.vscode
-    
-    # Fonts
-    unstable.cascadia-code
-    unstable.fira-code
-    unstable.inter
+
+    # Tweaks
+    gnome3.dconf-editor
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -108,6 +150,15 @@ in {
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
+  # For applications which should be bleeding edge
+  xdg.portal = {
+    enable = true;
+    gtkUsePortal = true;
+    extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+  };
+
+  services.flatpak.enable = true;
+  
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
