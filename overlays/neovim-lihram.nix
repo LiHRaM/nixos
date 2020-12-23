@@ -17,7 +17,10 @@ self: super:
       };
 
       customRC = ''
-        let g:LanguageClient_serverCommands = { 'nix': ['rnix-lsp'] }
+        let g:LanguageClient_serverCommands = { 
+            \ 'nix': ['rnix-lsp']
+            \ 'rust': ['rust-analyzer']
+            \ }
         
         " Reasonable tabs
         set tabstop=8 

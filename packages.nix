@@ -30,14 +30,15 @@ in
     # sdks
     unstable.rustup
     unstable.clang
-    # tectonic-lihram
+    unstable.tectonic
 
     # editors
     neovim-lihram
     
     # Language servers
-    texlab
-    rnix-lsp
+    unstable.texlab
+    unstable.rnix-lsp
+    unstable.rust-analyzer
 
     # Tweaks
     gnome3.dconf-editor
