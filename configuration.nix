@@ -7,8 +7,12 @@ in {
     ./hardware-configuration.nix
     ./elementary.nix
     ./fonts.nix
-    ./overlays/neovim-with-plugins.nix
+    ./overlays.nix
   ];
+
+  environment.variables = {
+    EDITOR = "nvim";
+  };
 
   nixpkgs.config = {
     allowUnfree = true;

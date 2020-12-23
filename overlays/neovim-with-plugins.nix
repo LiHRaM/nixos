@@ -1,8 +1,8 @@
-{ pkgs, ... }:
+self: super:
 let
-  vim-nonsense = pkgs.vimUtils.buildVimPlugin {
+  vim-nonsense = super.vimUtils.buildVimPlugin {
     name = "vim-nonsense";
-    src = pkgs.fetchFromGitHub {
+    src = super.fetchFromGitHub {
       owner = "lihram";
       repo = "vim-nonsense";
       rev = "14d3653831cc71300da3400d6bca4b16b7632fb1";
@@ -10,30 +10,22 @@ let
     };
   };
 in {
-  environment.variables = {
-    EDITOR = "nvim";
-  };
-
-  nixpkgs.overlays = [
-    (self: super: {
-      neovim-with-plugins = super.neovim.override {
-        viAlias = true;
-        vimAlias = true;
-
-        configure = {
-          packages.myPlugins = with pkgs.vimPlugins; {
-            start = [
-              vim-sensible
-              vim-airline
-              vim-lastplace
-              vim-nix
-              vim-devicons
-              vim-nonsense
-            ];
-            opt = [];
-          };
-        };
+  neovim-with-plugins = super.neovim.override {
+    viAlias = true;
+    vimAlias = true;
+    configure = {
+      packages.myPlugins = with super.vimPlugins; {
+        start = [
+          vim-sensible
+          vim-airline
+          vim-lastplace
+          vim-nix
+          vim-devicons
+          vim-nonsense
+        ];
+        opt = [];
       };
-    })
-  ];
+    };
+  };
 }
+
