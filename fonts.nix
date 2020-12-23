@@ -1,13 +1,14 @@
 { pkgs, ...}:
 {
   fonts.fonts = with pkgs; [
-    cascadia-code
+    (nerdfonts.override { fonts = [ "FiraCode" ]; })
     inter
   ];
 
   fonts.fontconfig.defaultFonts.monospace = [
-    "Cascadia Code PL"
+    "FiraCode Nerd Font"
   ];
+
   fonts.fontconfig.defaultFonts.sansSerif = [
     "Inter"
   ];

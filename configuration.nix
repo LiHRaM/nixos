@@ -8,6 +8,7 @@ in {
     ./elementary.nix
     ./fonts.nix
     ./overlays.nix
+    ./packages.nix
   ];
 
   environment.variables = {
@@ -62,37 +63,6 @@ in {
     ]; 
   };
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    # base packages
-    wget
-    unstable.alacritty
-    unstable.git
-    unstable.skim
-    unstable.fd
-
-    # browsing
-    unstable.firefox
-
-    # social
-    unstable.element-desktop
-
-    # sdks
-    unstable.rustup
-    unstable.tectonic
-    unstable.clang
-
-    # language servers
-    texlab
-
-    # editors
-    neovim-with-plugins
-    unstable.vscode
-
-    # Tweaks
-    gnome3.dconf-editor
-  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -134,6 +104,5 @@ in {
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "20.09"; # Did you read the comment?
-
 }
 

@@ -1,5 +1,5 @@
 {
   nixpkgs.overlays = [
-    (import ./overlays/neovim-with-plugins.nix)
+    (import ./overlays/neovim-lihram.nix)
   ];
 }
