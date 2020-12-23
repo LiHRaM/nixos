@@ -1,33 +1,19 @@
 { config, pkgs, options, ... }:
-let
-  unstableTarball =
-    fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
-in {
+{
   imports = [
+    <home-manager/nixos>
     ./hardware-configuration.nix
     ./elementary.nix
     ./fonts.nix
     ./overlays.nix
     ./packages.nix
   ];
+  
+  home-manager.useGlobalPkgs = true;
+
 
   environment.variables = {
     EDITOR = "nvim";
-  };
-
-  nixpkgs.config = {
-    allowUnfree = true;
-    packageOverrides = pkgs: {
-      unstable = import unstableTarball {
-        config = config.nixpkgs.config;
-      };
-    };
-  };
-
-  system.autoUpgrade = {
-    enable = true;
-    allowReboot = false;
-    channel = https://nixos.org/channels/nixos-20.09;
   };
 
   boot.loader.systemd-boot.enable = true;
