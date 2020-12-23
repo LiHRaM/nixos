@@ -7,23 +7,18 @@ self: super:
       packages.myPlugins = with super.vimPlugins; {
         start = [
           vim-sensible
-          vim-airline
           vim-lastplace
           vim-devicons
-          LanguageClient-neovim
+          vim-nix
+          lightline-vim
+          skim-vim
         ];
         opt = [];
-
       };
 
       customRC = ''
-        let g:LanguageClient_serverCommands = { 
-            \ 'nix': ['rnix-lsp'],
-            \ 'rust': ['rust-analyzer']
-            \ }
-        
         " Reasonable tabs
-        set tabstop=8 
+        set tabstop=8
         set softtabstop=0
         set shiftwidth=4
         set expandtab
@@ -35,16 +30,16 @@ self: super:
         set nobackup
         set nowritebackup
         set noswapfile
- 
+
         " Use the real clipboard
         set clipboard+=unnamedplus
- 
- 
+
+
         " Mappings
         let mapleader = ","
         map <space> /
         map <C-space> ?
- 
+
         " Clear search highlight
         map <silent> <leader><cr> :let @/ = ""<cr>
       '';

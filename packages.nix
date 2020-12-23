@@ -5,42 +5,36 @@ in
 {
   nixpkgs.config.allowUnfree = true;
 
-  system.autoUpgrade = {
-    enable = true;
-    allowReboot = false;
-    channel = https://nixos.org/channels/nixos-20.09;
-  };
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = with unstable; [
     # base packages
-    wget
-    unstable.git
-    unstable.skim
-    unstable.fd
-    unstable.kitty
+    pkgs.wget
+    git
+    skim
+    fd
+    kitty
 
     # browsing
-    unstable.firefox
+    firefox
 
     # social
-    unstable.element-desktop
+    element-desktop
 
     # sdks
-    unstable.rustup
-    unstable.clang
-    unstable.tectonic
+    rustup
+    clang
+    tectonic
 
     # editors
-    neovim-lihram
+    pkgs.neovim-lihram
     
     # Language servers
-    unstable.texlab
-    unstable.rnix-lsp
-    unstable.rust-analyzer
+    texlab
+    rnix-lsp
+    rust-analyzer
 
     # Tweaks
-    gnome3.dconf-editor
+    pkgs.gnome3.dconf-editor
   ];
 }
