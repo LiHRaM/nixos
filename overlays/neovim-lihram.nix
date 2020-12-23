@@ -18,7 +18,7 @@ self: super:
 
       customRC = ''
         let g:LanguageClient_serverCommands = { 
-            \ 'nix': ['rnix-lsp']
+            \ 'nix': ['rnix-lsp'],
             \ 'rust': ['rust-analyzer']
             \ }
         
