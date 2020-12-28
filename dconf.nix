@@ -38,9 +38,9 @@ in
     };
 
     "org/gnome/desktop/interface" = {
-      document-font-name = "sans10";
-      font-name = "sans10";
-      monospace-font-name = "monospace10";
+      document-font-name = "sans 10";
+      font-name = "sans 10";
+      monospace-font-name = "monospace 10";
     };
 
     "org/gnome/desktop/peripherals/mouse" = {
