@@ -63,15 +63,6 @@
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
-  # For applications which should be bleeding edge
-  xdg.portal = {
-    enable = true;
-    gtkUsePortal = true;
-    extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
-  };
-
-  services.flatpak.enable = true;
-
   virtualisation.podman = {
     enable = true;
     dockerCompat = true;

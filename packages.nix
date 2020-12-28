@@ -18,23 +18,7 @@ in
     # browsing
     firefox
 
-    # social
-    element-desktop
-
-    # sdks
-    rustup
-    clang
-    tectonic
-
     # editors
     pkgs.neovim-lihram
-    
-    # Language servers
-    texlab
-    rnix-lsp
-    rust-analyzer
-
-    # Tweaks
-    pkgs.gnome3.dconf-editor
   ];
 }

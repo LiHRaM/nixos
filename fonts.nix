@@ -6,7 +6,7 @@
   ];
 
   fonts.fontconfig.defaultFonts.monospace = [
-    "FiraCode Nerd Font"
+    "FiraCode Nerd Font Mono"
   ];
 
   fonts.fontconfig.defaultFonts.sansSerif = [

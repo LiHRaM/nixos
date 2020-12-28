@@ -10,7 +10,7 @@ self: super:
           vim-lastplace
           vim-devicons
           vim-nix
-          lightline-vim
+          vim-airline
           skim-vim
         ];
         opt = [];
@@ -41,7 +41,7 @@ self: super:
         map <C-space> ?
 
         " Clear search highlight
-        map <silent> <leader><cr> :let @/ = ""<cr>
+        map <silent> <leader><cr> :noh<cr>
       '';
     };
   };
