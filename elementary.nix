@@ -17,4 +17,8 @@
     libinput.enable = true;
     desktopManager.pantheon.enable = true;
   };
+  
+  environment.pantheon.excludePackages = [
+    pantheon.elementary-code
+  ];
 }
