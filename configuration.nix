@@ -7,6 +7,8 @@
     ./fonts.nix
     ./overlays.nix
     ./packages.nix
+    ./laptop.nix
+    ./jellyfin.nix
   ];
   
   home-manager.useGlobalPkgs = true;

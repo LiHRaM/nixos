@@ -18,7 +18,7 @@
     desktopManager.pantheon.enable = true;
   };
   
-  environment.pantheon.excludePackages = [
+  environment.pantheon.excludePackages = with pkgs; [
     pantheon.elementary-code
   ];
 }
