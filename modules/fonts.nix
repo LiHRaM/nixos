@@ -1,7 +1,7 @@
 { pkgs, ...}:
 {
   fonts.fonts = with pkgs; [
-    (nerdfonts.override { fonts = [ "FiraCode" ]; })
+    (nerdfonts.override { fonts = [ "FiraCode" "Terminus" ]; })
     inter
   ];
 
